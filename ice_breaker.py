@@ -6,6 +6,7 @@ import os
 
 from agents.linkedin_lookup import lookup
 from utils.linkedin import scrape_linkedin
+from output_parser import summary_parser
 
 def ice_breaker(name):
     username = lookup(name)
@@ -15,14 +16,18 @@ def ice_breaker(name):
         given the information {information} about a person I want you to create:
         1- a short summary
         2- a 2 interesting facts about them
+        
+        \n{format_instructions}
     """
 
-    summary_prom_temp = PromptTemplate(input_variables=["information"], template=summary_temp)
+    summary_prom_temp = PromptTemplate(
+        input_variables=["information"], template=summary_temp,
+        partial_variables= {"format_instructions": summary_parser.get_format_instructions()})
 
     llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash", google_api_key=os.environ["GOOGLE_API_KEY"])
 
-    chain = summary_prom_temp | llm | StrOutputParser()
-
+    #chain = summary_prom_temp | llm | StrOutputParser()
+    chain = summary_prom_temp | llm | summary_parser
     res = chain.invoke(input={'information': linkedin_data})
     print(res)
 
