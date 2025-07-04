@@ -3,7 +3,7 @@
 A LangChain-powered AI assistant that generates personalized conversation starters ("ice breakers") based on a LinkedIn profile. It uses agentic reasoning and web search tools to fetch relevant data and generate insights for outreach, especially in professional or recruitment contexts.
 
 ---
-![Linkedin Ice Breaker Overview](utils/readme_image.jpg)
+![Linkedin Ice Breaker Overview](utils/readme_img.jpg)
 ## 🚀 Features
 
 - 🔍 **LinkedIn Profile Lookup**: Uses Tavily search to locate public LinkedIn profiles from a person's name.
