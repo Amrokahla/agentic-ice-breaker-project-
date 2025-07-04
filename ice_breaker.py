@@ -6,9 +6,9 @@ import os
 
 from agents.linkedin_lookup import lookup
 from utils.linkedin import scrape_linkedin
-from output_parser import summary_parser
+from output_parser import person_intel_parser, PersonIntel
 
-def ice_breaker(name):
+def ice_breaker(name: str) -> tuple[PersonIntel, str]:
     username = lookup(name)
     linkedin_data = scrape_linkedin(profile_url= username)
 
@@ -22,19 +22,19 @@ def ice_breaker(name):
 
     summary_prom_temp = PromptTemplate(
         input_variables=["information"], template=summary_temp,
-        partial_variables= {"format_instructions": summary_parser.get_format_instructions()})
+        partial_variables= {"format_instructions": person_intel_parser.get_format_instructions()})
 
     llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash", google_api_key=os.environ["GOOGLE_API_KEY"])
 
     #chain = summary_prom_temp | llm | StrOutputParser()
-    chain = summary_prom_temp | llm | summary_parser
-    res = chain.invoke(input={'information': linkedin_data})
-    print(res)
+    chain = summary_prom_temp | llm | person_intel_parser
+    res: PersonIntel = chain.invoke(input={'information': linkedin_data})
 
+    return res, linkedin_data.get('photoUrl')
 
 
 if __name__ == '__main__':
     load_dotenv()
-    ice_breaker("Adham Assy")
+    ice_breaker("Amro Kahla")
 
 

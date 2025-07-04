@@ -11,6 +11,7 @@ langchain-google-genai = "*"
 langchain-ollama = "*"
 langchainhub = "*"
 langchain-tavily = "*"
+flask = "*"
 
 [dev-packages]
 
